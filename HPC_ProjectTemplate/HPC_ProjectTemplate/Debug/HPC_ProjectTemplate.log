@@ -1,4 +1,3 @@
 ﻿  Source.cpp
-c:\users\keycom1\documents\visual studio 2017\projects\hpc_projecttemplate\hpc_projecttemplate\source.cpp(99): warning C4244: '+=': conversion from 'double' to 'int', possible loss of data
   Source.obj : MSIL module encountered; incremental linking is disabled for MSIL; performing full link
-  HPC_ProjectTemplate.vcxproj -> C:\Users\KeyCom1\Documents\Visual Studio 2017\Projects\HPC_ProjectTemplate\Debug\HPC_ProjectTemplate.exe
+  HPC_ProjectTemplate.vcxproj -> E:\Computer Science\Projects\Junior Year - Term 2\Hight Performance Computing\HighPerformanceMedianFilter\HPC_ProjectTemplate\Debug\HPC_ProjectTemplate.exe

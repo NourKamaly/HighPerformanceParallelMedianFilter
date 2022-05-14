@@ -4,6 +4,7 @@
 #include<string.h>
 #include<msclr\marshal_cppstd.h>
 #include <ctime>// include this header 
+#include <mpi.h>
 #pragma once
 
 #using <mscorlib.dll>
@@ -81,7 +82,17 @@ void createImage(int* image, int width, int height, int index)
 
 int main()
 {
-	int ImageWidth = 4, ImageHeight = 4;
+	MPI_Init(NULL, NULL);
+	int size;
+	MPI_Comm_size(MPI_COMM_WORLD, &size);
+	int rank;
+	MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+	cout << rank << endl;;
+	char processor_name[MPI_MAX_PROCESSOR_NAME];
+	int name_len;
+	MPI_Get_processor_name(processor_name, &name_len);
+	cout << "Hello word from processor " << processor_name << endl;
+	/*int ImageWidth = 4, ImageHeight = 4;
 
 	int start_s, stop_s, TotalTime = 0;
 
@@ -92,14 +103,19 @@ int main()
 	imagePath = marshal_as<System::String^>(img);
 	int* imageData = inputImage(&ImageWidth, &ImageHeight, imagePath);
 
+	//write code here
+	cout << endl << imageData << endl;
+	cout << ImageHeight << endl << ImageWidth << endl;
+
 
 	start_s = clock();
-	createImage(imageData, ImageWidth, ImageHeight, 0);
+	createImage(imageData, ImageWidth, ImageHeight, 11);
 	stop_s = clock();
 	TotalTime += (stop_s - start_s) / double(CLOCKS_PER_SEC) * 1000;
 	cout << "time: " << TotalTime << endl;
 
-	free(imageData);
+	free(imageData);*/
+	MPI_Finalize();
 	return 0;
 
 }
