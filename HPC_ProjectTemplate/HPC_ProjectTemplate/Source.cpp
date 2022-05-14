@@ -87,34 +87,54 @@ int main()
 	MPI_Comm_size(MPI_COMM_WORLD, &size);
 	int rank;
 	MPI_Comm_rank(MPI_COMM_WORLD, &rank);
-	cout << rank << endl;;
-	char processor_name[MPI_MAX_PROCESSOR_NAME];
-	int name_len;
-	MPI_Get_processor_name(processor_name, &name_len);
-	cout << "Hello word from processor " << processor_name << endl;
-	/*int ImageWidth = 4, ImageHeight = 4;
+	cout << rank << endl;
 
+	int ImageWidth = 4, ImageHeight = 4;
+	int* imageData = NULL;
+	int filterSize;
+	cin >> filterSize;
 	int start_s, stop_s, TotalTime = 0;
+	if (rank == 0) {
+		System::String^ imagePath;
+		std::string img;
+		img = "..//Data//Input//test.png";
+		imagePath = marshal_as<System::String^>(img);
+		imageData = inputImage(&ImageWidth, &ImageHeight, imagePath);
 
-	System::String^ imagePath;
-	std::string img;
-	img = "..//Data//Input//test.png";
+		//write code here
+		cout << endl << imageData << endl;
+		cout << ImageHeight << endl << ImageWidth << endl;
 
-	imagePath = marshal_as<System::String^>(img);
-	int* imageData = inputImage(&ImageWidth, &ImageHeight, imagePath);
+		start_s = clock();
+		createImage(imageData, ImageWidth, ImageHeight, 11);
+		stop_s = clock();
+		TotalTime += (stop_s - start_s) / double(CLOCKS_PER_SEC) * 1000;
+		cout << "time: " << TotalTime << endl;
+	}
+	MPI_Bcast(&ImageHeight, 1, MPI_INT, 0, MPI_COMM_WORLD);
+	MPI_Bcast(&ImageWidth, 1, MPI_INT, 0, MPI_COMM_WORLD);
+	int numOfBlocks = ImageHeight / size, extraRowsForBoundanarySubArray = int(filterSize/2);
+	int extraRowsForMiddleSubArrays = filterSize - 1;
+	MPI_Datatype boundarySubArray;
+	// height is the row, width is the column
+	int imageSize[2] = {ImageHeight,ImageWidth};
+	int boundarySubsize[2] = {numOfBlocks+extraRowsForBoundanarySubArray,ImageWidth};
+	int boundaryStart[2];
+	boundaryStart[1] = 0;
+	if (rank == 0) {
+		boundaryStart[0] = 0;
+	}
+	else if (rank == size - 1) {
+		boundaryStart[0] = numOfBlocks * rank - extraRowsForBoundanarySubArray;
+	}
+	PMPI_Type_create_subarray(2, imageSize, boundarySubsize, boundaryStart, MPI_ORDER_C,MPI_INT, & boundarySubArray);
+	MPI_Type_commit(&boundarySubArray);
 
-	//write code here
-	cout << endl << imageData << endl;
-	cout << ImageHeight << endl << ImageWidth << endl;
-
-
-	start_s = clock();
-	createImage(imageData, ImageWidth, ImageHeight, 11);
-	stop_s = clock();
-	TotalTime += (stop_s - start_s) / double(CLOCKS_PER_SEC) * 1000;
-	cout << "time: " << TotalTime << endl;
-
-	free(imageData);*/
+	MPI_Datatype middleSubArray;
+	
+	if (rank == 0) {
+		free(imageData);
+	}
 	MPI_Finalize();
 	return 0;
 
