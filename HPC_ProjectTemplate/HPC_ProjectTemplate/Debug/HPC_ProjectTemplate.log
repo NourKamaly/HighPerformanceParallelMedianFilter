@@ -1,5 +1,4 @@
 ﻿  Source.cpp
-E:\Computer Science\Projects\Junior Year - Term 2\Hight Performance Computing\HighPerformanceMedianFilter\HPC_ProjectTemplate\HPC_ProjectTemplate\Source.cpp(111,60): warning C4244: '+=': conversion from 'double' to 'int', possible loss of data
-E:\Computer Science\Projects\Junior Year - Term 2\Hight Performance Computing\HighPerformanceMedianFilter\HPC_ProjectTemplate\HPC_ProjectTemplate\Source.cpp(133,15): warning C4101: 'middleSubArray': unreferenced local variable
+D:\University Materials\third year\second term\High Performance Computing\gitproject\HighPerformanceMedianFilter\HPC_ProjectTemplate\HPC_ProjectTemplate\Source.cpp(199,66): warning C4244: '+=': conversion from 'double' to 'int', possible loss of data
   Source.obj : MSIL module encountered; incremental linking is disabled for MSIL; performing full link
-  HPC_ProjectTemplate.vcxproj -> E:\Computer Science\Projects\Junior Year - Term 2\Hight Performance Computing\HighPerformanceMedianFilter\HPC_ProjectTemplate\Debug\HPC_ProjectTemplate.exe
+  HPC_ProjectTemplate.vcxproj -> D:\University Materials\third year\second term\High Performance Computing\gitproject\HighPerformanceMedianFilter\HPC_ProjectTemplate\Debug\HPC_ProjectTemplate.exe
