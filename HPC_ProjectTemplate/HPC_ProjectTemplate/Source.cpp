@@ -1,11 +1,11 @@
 #include <iostream>
-#include <algorithm>
 #include <math.h>
 #include <stdlib.h>
 #include<string.h>
 #include<msclr\marshal_cppstd.h>
 #include <ctime>// include this header 
 #include <mpi.h>
+#include <algorithm>
 #pragma once
 
 #using <mscorlib.dll>
@@ -17,133 +17,203 @@ using namespace msclr::interop;
 
 int* inputImage(int* w, int* h, System::String^ imagePath) //put the size of image in w & h
 {
-    int* input;
+	int* input;
 
 
-    int OriginalImageWidth, OriginalImageHeight;
+	int Originalcolumns, Originalrows;
 
-    //*********************************************************Read Image and save it to local arrayss*************************	
-    //Read Image and save it to local arrayss
+	//*********************************************************Read Image and save it to local arrayss*************************	
+	//Read Image and save it to local arrayss
 
-    System::Drawing::Bitmap BM(imagePath);
+	System::Drawing::Bitmap BM(imagePath);
 
-    OriginalImageWidth = BM.Width;
-    OriginalImageHeight = BM.Height;
-    *w = BM.Width;
-    *h = BM.Height;
-    int* Red = new int[BM.Height * BM.Width];
-    int* Green = new int[BM.Height * BM.Width];
-    int* Blue = new int[BM.Height * BM.Width];
-    input = new int[BM.Height * BM.Width];
-    for (int i = 0; i < BM.Height; i++)
-    {
-        for (int j = 0; j < BM.Width; j++)
-        {
-            System::Drawing::Color c = BM.GetPixel(j, i);
+	Originalcolumns = BM.Width;
+	Originalrows = BM.Height;
+	*w = BM.Width;
+	*h = BM.Height;
+	int *Red = new int[BM.Height * BM.Width];
+	int *Green = new int[BM.Height * BM.Width];
+	int *Blue = new int[BM.Height * BM.Width];
+	input = new int[BM.Height*BM.Width];
+	for (int i = 0; i < BM.Height; i++)
+	{
+		for (int j = 0; j < BM.Width; j++)
+		{
+			System::Drawing::Color c = BM.GetPixel(j, i);
 
-            Red[i * BM.Width + j] = c.R;
-            Blue[i * BM.Width + j] = c.B;
-            Green[i * BM.Width + j] = c.G;
+			Red[i * BM.Width + j] = c.R;
+			Blue[i * BM.Width + j] = c.B;
+			Green[i * BM.Width + j] = c.G;
 
-            input[i * BM.Width + j] = ((c.R + c.B + c.G) / 3); //gray scale value equals the average of RGB values
+			input[i*BM.Width + j] = ((c.R + c.B + c.G) / 3); //gray scale value equals the average of RGB values
 
-        }
+		}
 
-    }
-    return input;
+	}
+	return input;
 }
 
 
 void createImage(int* image, int width, int height, int index)
 {
-    System::Drawing::Bitmap MyNewImage(width, height);
+	System::Drawing::Bitmap MyNewImage(width, height);
 
 
-    for (int i = 0; i < MyNewImage.Height; i++)
-    {
-        for (int j = 0; j < MyNewImage.Width; j++)
-        {
-            //i * OriginalImageWidth + j
-            if (image[i * width + j] < 0)
-            {
-                image[i * width + j] = 0;
-            }
-            if (image[i * width + j] > 255)
-            {
-                image[i * width + j] = 255;
-            }
-            System::Drawing::Color c = System::Drawing::Color::FromArgb(image[i * MyNewImage.Width + j], image[i * MyNewImage.Width + j], image[i * MyNewImage.Width + j]);
-            MyNewImage.SetPixel(j, i, c);
-        }
-    }
-    MyNewImage.Save("..//Data//Output//outputRes" + index + ".png");
-    cout << "result Image Saved " << index << endl;
+	for (int i = 0; i < MyNewImage.Height; i++)
+	{
+		for (int j = 0; j < MyNewImage.Width; j++)
+		{
+			//i * Originalcolumns + j
+			if (image[i*width + j] < 0)
+			{
+				image[i*width + j] = 0;
+			}
+			if (image[i*width + j] > 255)
+			{
+				image[i*width + j] = 255;
+			}
+			System::Drawing::Color c = System::Drawing::Color::FromArgb(image[i*MyNewImage.Width + j], image[i*MyNewImage.Width + j], image[i*MyNewImage.Width + j]);
+			MyNewImage.SetPixel(j, i, c);
+		}
+	}
+	MyNewImage.Save("..//Data//Output//outputRes" + index + ".png");
+	cout << "result Image Saved " << index << endl;
 }
 
-
-//
 void Midean_Filter(int height, int width, int filter_size, int ImageData[], int ImageOutput[]) {
 
-    cout << "Height: " << height << "  Width: " << width << endl;
+	cout << "Height: " << height << "  Width: " << width << endl;
 
-    for (int row = 0; row < height; row++)
-    {
-        for (int col = 0; col < width; col++)
-        {
+	for (int row = 0; row < height; row++)
+	{
+		for (int col = 0; col < width; col++)
+		{
 
-            int* window = new int[filter_size * filter_size];
+			int* window = new int[filter_size * filter_size];
 
-            for (int r = 0, i = row - floor(filter_size / 2); r < filter_size; i++, r++)
-            {
-                for (int c = 0, j = col - floor(filter_size / 2); c < filter_size; j++, c++)
-                {
-                    if ((i >= 0 && i < height) && (j >= 0 && j < width))
-                    {
-                        window[r * filter_size + c] = ImageData[i * width + j];
-                    }
-                    else {
-                        window[r * filter_size + c] = 0;
-                    }
-                }
-            }
+			for (int r = 0, i = row - floor(filter_size / 2); r < filter_size; i++, r++)
+			{
+				for (int c = 0, j = col - floor(filter_size / 2); c < filter_size; j++, c++)
+				{
+					if ((i >= 0 && i < height) && (j >= 0 && j < width))
+					{
+						window[r * filter_size + c] = ImageData[i * width + j];
+					}
+					else {
+						window[r * filter_size + c] = 0;
+					}
+				}
+			}
 
-            sort(window, window + (filter_size * filter_size));
+			sort(window, window + (filter_size * filter_size));
 
-            ImageOutput[row * width + col] = window[(filter_size * filter_size) / 2];
-        }
-    }
+			ImageOutput[row * width + col] = window[(filter_size * filter_size) / 2];
+		}
+	}
 }
-
 
 int main()
 {
-    int ImageWidth = 4, ImageHeight = 4;
+	MPI_Init(NULL, NULL);
+	int size;
+	MPI_Comm_size(MPI_COMM_WORLD, &size);
+	int rank;
+	MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+	cout << rank << endl;
 
-    int start_s, stop_s, TotalTime = 0;
+	int columns = 4, rows = 4;
+	int* imageData = 0;
+	int filterSize = 5;
 
-    System::String^ imagePath;
-    std::string img;
-    img = "..//Data//Input/test.png";
+	int start_s = 0, stop_s = 0, TotalTime = 0;
+	if (rank == 0) {
+		cout << "Enter the filter size: ";
+		cin >> filterSize;
+		System::String^ imagePath;
+		std::string img;
+		img = "..//Data//Input//10N_N_Salt_Pepper.PNG";
+		imagePath = marshal_as<System::String^>(img);
+		imageData = inputImage(&columns, &rows, imagePath);
+		//write code here
+		cout << endl <<"Picture is stored in memory at location : " << imageData << endl;
+		cout <<"Rows: " << rows << endl <<"Columns: " << columns << endl;
+		int filter_size;
+		int* ImageOutput = new int[rows * columns];
 
-    imagePath = marshal_as<System::String^>(img);
-    int* imageData = inputImage(&ImageWidth, &ImageHeight, imagePath);
+		cout << "Enter the size of the filter: "; cin >> filter_size;
 
-    int filter_size;
-    int* ImageOutput = new int[ImageHeight * ImageWidth];
+		Midean_Filter(rows, columns, filter_size, imageData, ImageOutput);
 
-    cout << "Enter the size of the filter: "; cin >> filter_size;
+		start_s = clock();
+		createImage(ImageOutput, columns, rows, 0);
+		stop_s = clock();
 
-    Midean_Filter(ImageHeight, ImageWidth, filter_size, imageData, ImageOutput);
+		TotalTime += (stop_s - start_s) / double(CLOCKS_PER_SEC) * 1000;
+		cout << "Time of sequential code: " << TotalTime << endl;
+	}
+	MPI_Bcast(&filterSize, 1, MPI_INT, 0, MPI_COMM_WORLD);
+	MPI_Bcast(&rows, 1, MPI_INT, 0, MPI_COMM_WORLD);
+	MPI_Bcast(&columns, 1, MPI_INT, 0, MPI_COMM_WORLD);
+	MPI_Bcast(&start_s, 1, MPI_INT, 0, MPI_COMM_WORLD);
+	int elementsPerProcessor = (rows * columns) / size;
+	int rowsPerProcessor = rows / size;
+	int* filteredImagePerProcessor = new int[elementsPerProcessor] {};
+	int* unfilteredImagePerProcessor = new int[elementsPerProcessor] {};
+	int extraElementsForMiddleProcessors = (filterSize - 1) * columns;
+	int extraElementsForBoundaryProcessors = (filterSize / 2) * columns;
+	int elementsForBoundaryProcessors = elementsPerProcessor + extraElementsForBoundaryProcessors;
+	int elementsForMiddleProcessors = elementsPerProcessor + extraElementsForMiddleProcessors;
+	int* recvBufferForMiddleProcessors = new int[elementsForMiddleProcessors];
+	MPI_Barrier(MPI_COMM_WORLD);
+	MPI_Scatter(imageData, elementsPerProcessor, MPI_INT, unfilteredImagePerProcessor, elementsPerProcessor, MPI_INT, 0, MPI_COMM_WORLD);
 
-    start_s = clock();
-    createImage(ImageOutput, ImageWidth, ImageHeight, 0);
-    stop_s = clock();
+	int* filteredImage = new int[rows * columns];
+	int* medianFilter = new int[filterSize * filterSize];
 
-    TotalTime += (stop_s - start_s) / double(CLOCKS_PER_SEC) * 1000;
-    cout << "time: " << TotalTime << endl;
+	int ctr = 0;
+	for (int row = 0; row < rowsPerProcessor; row++)
+	{
+		for (int col = 0; col < columns; col++)
+		{
+			for (int r = 0, i = row - floor(filterSize / 2); r < filterSize; i++, r++)
+			{
+				for (int c = 0, j = col - floor(filterSize / 2); c < filterSize; j++, c++)
+				{
+					if ((i >= 0 && i < rowsPerProcessor) && (j >= 0 && j < columns))
+					{
+						medianFilter[r * filterSize + c] = unfilteredImagePerProcessor[i * columns + j];
+					}
+					else {
+						medianFilter[r * filterSize + c] = 127;
+					}
+				}
+			}
 
-    free(imageData);
-    system("pause");
-    return 0;
+			sort(medianFilter, medianFilter + (filterSize * filterSize));
+
+			filteredImagePerProcessor[ctr] = medianFilter[(filterSize * filterSize) / 2];
+
+			ctr++;
+		}
+	}
+	MPI_Barrier(MPI_COMM_WORLD);
+	MPI_Gather(filteredImagePerProcessor, elementsPerProcessor, MPI_INT, filteredImage, elementsPerProcessor, MPI_INT, 2, MPI_COMM_WORLD);
+	if (rank == 2) {
+		createImage(filteredImage, columns, rows, 127);
+		stop_s = clock();
+		TotalTime += (stop_s - start_s) / double(CLOCKS_PER_SEC) * 1000;
+		cout << "time: " << TotalTime << endl;
+	}
+	if (rank == 0) {
+		free(imageData);
+	}
+	if (rank == 2) {
+		free(filteredImage);
+	}
+	MPI_Finalize();
+	return 0;
 
 }
+
+
+

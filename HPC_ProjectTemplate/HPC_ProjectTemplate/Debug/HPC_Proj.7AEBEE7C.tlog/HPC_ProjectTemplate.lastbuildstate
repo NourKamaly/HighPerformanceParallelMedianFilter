@@ -1,2 +1,2 @@
-PlatformToolSet=v142:VCToolArchitecture=Native32Bit:VCToolsVersion=14.29.30133:VCServicingVersionCrtHeaders=14.29.30136:TargetPlatformVersion=10.0.19041.0:TargetFrameworkVersion=v4.0::EnableManagedIncrementalBuild=true:
-Debug|Win32|D:\University Materials\third year\second term\High Performance Computing\New folder (2)\HighPerformanceMedianFilter\HPC_ProjectTemplate\|
+PlatformToolSet=v143:VCToolArchitecture=Native32Bit:VCToolsVersion=14.31.31103:TargetPlatformVersion=10.0.19041.0:TargetFrameworkVersion=v4.7.2::EnableManagedIncrementalBuild=true:
+Debug|Win32|E:\Computer Science\Projects\Junior Year - Term 2\Hight Performance Computing\HighPerformanceMedianFilter\HPC_ProjectTemplate\|
