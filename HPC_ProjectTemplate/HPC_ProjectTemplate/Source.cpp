@@ -31,10 +31,10 @@ int* inputImage(int* w, int* h, System::String^ imagePath) //put the size of ima
 	Originalrows = BM.Height;
 	*w = BM.Width;
 	*h = BM.Height;
-	int *Red = new int[BM.Height * BM.Width];
-	int *Green = new int[BM.Height * BM.Width];
-	int *Blue = new int[BM.Height * BM.Width];
-	input = new int[BM.Height*BM.Width];
+	int* Red = new int[BM.Height * BM.Width];
+	int* Green = new int[BM.Height * BM.Width];
+	int* Blue = new int[BM.Height * BM.Width];
+	input = new int[BM.Height * BM.Width];
 	for (int i = 0; i < BM.Height; i++)
 	{
 		for (int j = 0; j < BM.Width; j++)
@@ -45,7 +45,7 @@ int* inputImage(int* w, int* h, System::String^ imagePath) //put the size of ima
 			Blue[i * BM.Width + j] = c.B;
 			Green[i * BM.Width + j] = c.G;
 
-			input[i*BM.Width + j] = ((c.R + c.B + c.G) / 3); //gray scale value equals the average of RGB values
+			input[i * BM.Width + j] = ((c.R + c.B + c.G) / 3); //gray scale value equals the average of RGB values
 
 		}
 
@@ -64,15 +64,15 @@ void createImage(int* image, int width, int height, int index)
 		for (int j = 0; j < MyNewImage.Width; j++)
 		{
 			//i * Originalcolumns + j
-			if (image[i*width + j] < 0)
+			if (image[i * width + j] < 0)
 			{
-				image[i*width + j] = 0;
+				image[i * width + j] = 0;
 			}
-			if (image[i*width + j] > 255)
+			if (image[i * width + j] > 255)
 			{
-				image[i*width + j] = 255;
+				image[i * width + j] = 255;
 			}
-			System::Drawing::Color c = System::Drawing::Color::FromArgb(image[i*MyNewImage.Width + j], image[i*MyNewImage.Width + j], image[i*MyNewImage.Width + j]);
+			System::Drawing::Color c = System::Drawing::Color::FromArgb(image[i * MyNewImage.Width + j], image[i * MyNewImage.Width + j], image[i * MyNewImage.Width + j]);
 			MyNewImage.SetPixel(j, i, c);
 		}
 	}
@@ -135,21 +135,19 @@ int main()
 		imagePath = marshal_as<System::String^>(img);
 		imageData = inputImage(&columns, &rows, imagePath);
 		//write code here
-		cout << endl <<"Picture is stored in memory at location : " << imageData << endl;
-		cout <<"Rows: " << rows << endl <<"Columns: " << columns << endl;
-		int filter_size;
+		cout << endl << "Picture is stored in memory at location : " << imageData << endl;
 		int* ImageOutput = new int[rows * columns];
 
-		cout << "Enter the size of the filter: "; cin >> filter_size;
-
-		Midean_Filter(rows, columns, filter_size, imageData, ImageOutput);
+		Midean_Filter(rows, columns, filterSize, imageData, ImageOutput);
 
 		start_s = clock();
-		createImage(ImageOutput, columns, rows, 0);
+		createImage(ImageOutput, rows, columns, 3);
 		stop_s = clock();
 
 		TotalTime += (stop_s - start_s) / double(CLOCKS_PER_SEC) * 1000;
 		cout << "Time of sequential code: " << TotalTime << endl;
+		free(ImageOutput);
+		start_s = clock();
 	}
 	MPI_Bcast(&filterSize, 1, MPI_INT, 0, MPI_COMM_WORLD);
 	MPI_Bcast(&rows, 1, MPI_INT, 0, MPI_COMM_WORLD);
@@ -159,11 +157,11 @@ int main()
 	int rowsPerProcessor = rows / size;
 	int* filteredImagePerProcessor = new int[elementsPerProcessor] {};
 	int* unfilteredImagePerProcessor = new int[elementsPerProcessor] {};
-	int extraElementsForMiddleProcessors = (filterSize - 1) * columns;
+	/*int extraElementsForMiddleProcessors = (filterSize - 1) * columns;
 	int extraElementsForBoundaryProcessors = (filterSize / 2) * columns;
 	int elementsForBoundaryProcessors = elementsPerProcessor + extraElementsForBoundaryProcessors;
 	int elementsForMiddleProcessors = elementsPerProcessor + extraElementsForMiddleProcessors;
-	int* recvBufferForMiddleProcessors = new int[elementsForMiddleProcessors];
+	int* recvBufferForMiddleProcessors = new int[elementsForMiddleProcessors];*/
 	MPI_Barrier(MPI_COMM_WORLD);
 	MPI_Scatter(imageData, elementsPerProcessor, MPI_INT, unfilteredImagePerProcessor, elementsPerProcessor, MPI_INT, 0, MPI_COMM_WORLD);
 
@@ -199,10 +197,10 @@ int main()
 	MPI_Barrier(MPI_COMM_WORLD);
 	MPI_Gather(filteredImagePerProcessor, elementsPerProcessor, MPI_INT, filteredImage, elementsPerProcessor, MPI_INT, 2, MPI_COMM_WORLD);
 	if (rank == 2) {
-		createImage(filteredImage, columns, rows, 127);
+		createImage(filteredImage, columns, rows, 2);
 		stop_s = clock();
 		TotalTime += (stop_s - start_s) / double(CLOCKS_PER_SEC) * 1000;
-		cout << "time: " << TotalTime << endl;
+		cout << "Time of parallel programming: " << TotalTime << endl;
 	}
 	if (rank == 0) {
 		free(imageData);

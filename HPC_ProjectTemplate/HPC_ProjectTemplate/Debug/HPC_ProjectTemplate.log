@@ -1,11 +1,9 @@
 ﻿  Source.cpp
-E:\Computer Science\Projects\Junior Year - Term 2\Hight Performance Computing\HighPerformanceMedianFilter\HPC_ProjectTemplate\HPC_ProjectTemplate\Source.cpp(94,22): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
-E:\Computer Science\Projects\Junior Year - Term 2\Hight Performance Computing\HighPerformanceMedianFilter\HPC_ProjectTemplate\HPC_ProjectTemplate\Source.cpp(96,23): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
-E:\Computer Science\Projects\Junior Year - Term 2\Hight Performance Computing\HighPerformanceMedianFilter\HPC_ProjectTemplate\HPC_ProjectTemplate\Source.cpp(151,60): warning C4244: '+=': conversion from 'double' to 'int', possible loss of data
-E:\Computer Science\Projects\Junior Year - Term 2\Hight Performance Computing\HighPerformanceMedianFilter\HPC_ProjectTemplate\HPC_ProjectTemplate\Source.cpp(178,22): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
-E:\Computer Science\Projects\Junior Year - Term 2\Hight Performance Computing\HighPerformanceMedianFilter\HPC_ProjectTemplate\HPC_ProjectTemplate\Source.cpp(180,23): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
-E:\Computer Science\Projects\Junior Year - Term 2\Hight Performance Computing\HighPerformanceMedianFilter\HPC_ProjectTemplate\HPC_ProjectTemplate\Source.cpp(204,60): warning C4244: '+=': conversion from 'double' to 'int', possible loss of data
-  .NETFramework,Version=v4.7.2.AssemblyAttributes.cpp
-  Generating Code...
+E:\Computer Science\Projects\Junior Year - Term 2\High Performance Computing\HighPerformanceMedianFilter\HPC_ProjectTemplate\HPC_ProjectTemplate\Source.cpp(94,22): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+E:\Computer Science\Projects\Junior Year - Term 2\High Performance Computing\HighPerformanceMedianFilter\HPC_ProjectTemplate\HPC_ProjectTemplate\Source.cpp(96,23): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+E:\Computer Science\Projects\Junior Year - Term 2\High Performance Computing\HighPerformanceMedianFilter\HPC_ProjectTemplate\HPC_ProjectTemplate\Source.cpp(147,60): warning C4244: '+=': conversion from 'double' to 'int', possible loss of data
+E:\Computer Science\Projects\Junior Year - Term 2\High Performance Computing\HighPerformanceMedianFilter\HPC_ProjectTemplate\HPC_ProjectTemplate\Source.cpp(176,22): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+E:\Computer Science\Projects\Junior Year - Term 2\High Performance Computing\HighPerformanceMedianFilter\HPC_ProjectTemplate\HPC_ProjectTemplate\Source.cpp(178,23): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+E:\Computer Science\Projects\Junior Year - Term 2\High Performance Computing\HighPerformanceMedianFilter\HPC_ProjectTemplate\HPC_ProjectTemplate\Source.cpp(202,60): warning C4244: '+=': conversion from 'double' to 'int', possible loss of data
   Source.obj : MSIL module encountered; incremental linking is disabled for MSIL; performing full link
-  HPC_ProjectTemplate.vcxproj -> E:\Computer Science\Projects\Junior Year - Term 2\Hight Performance Computing\HighPerformanceMedianFilter\HPC_ProjectTemplate\Debug\HPC_ProjectTemplate.exe
+  HPC_ProjectTemplate.vcxproj -> E:\Computer Science\Projects\Junior Year - Term 2\High Performance Computing\HighPerformanceMedianFilter\HPC_ProjectTemplate\Debug\HPC_ProjectTemplate.exe
