@@ -119,7 +119,6 @@ int main()
 	MPI_Comm_size(MPI_COMM_WORLD, &size);
 	int rank;
 	MPI_Comm_rank(MPI_COMM_WORLD, &rank);
-	cout << rank << endl;
 
 	int columns = 4, rows = 4;
 	int* imageData = 0;
@@ -141,7 +140,7 @@ int main()
 		Midean_Filter(rows, columns, filterSize, imageData, ImageOutput);
 
 		start_s = clock();
-		createImage(ImageOutput, rows, columns, 3);
+		createImage(ImageOutput, columns, rows, 3);
 		stop_s = clock();
 
 		TotalTime += (stop_s - start_s) / double(CLOCKS_PER_SEC) * 1000;
