@@ -136,13 +136,10 @@ int main()
 		//write code here
 		cout << endl << "Picture is stored in memory at location : " << imageData << endl;
 		int* ImageOutput = new int[rows * columns];
-
-		Midean_Filter(rows, columns, filterSize, imageData, ImageOutput);
-
 		start_s = clock();
-		createImage(ImageOutput, columns, rows, 3);
+		Midean_Filter(rows, columns, filterSize, imageData, ImageOutput);
 		stop_s = clock();
-
+		createImage(ImageOutput, columns, rows, 0);
 		TotalTime += (stop_s - start_s) / double(CLOCKS_PER_SEC) * 1000;
 		cout << "Time of sequential code: " << TotalTime << endl;
 		free(ImageOutput);
@@ -196,8 +193,8 @@ int main()
 	MPI_Barrier(MPI_COMM_WORLD);
 	MPI_Gather(filteredImagePerProcessor, elementsPerProcessor, MPI_INT, filteredImage, elementsPerProcessor, MPI_INT, 2, MPI_COMM_WORLD);
 	if (rank == 2) {
-		createImage(filteredImage, columns, rows, 2);
 		stop_s = clock();
+		createImage(filteredImage, columns, rows, 1);
 		TotalTime += (stop_s - start_s) / double(CLOCKS_PER_SEC) * 1000;
 		cout << "Time of parallel programming: " << TotalTime << endl;
 	}
@@ -207,6 +204,9 @@ int main()
 	if (rank == 2) {
 		free(filteredImage);
 	}
+	free(filteredImagePerProcessor);
+	free(unfilteredImagePerProcessor);
+	free(medianFilter);
 	MPI_Finalize();
 	return 0;
 
