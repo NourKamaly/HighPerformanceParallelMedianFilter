@@ -130,7 +130,7 @@ int main()
 		cin >> filterSize;
 		System::String^ imagePath;
 		std::string img;
-		img = "..//Data//Input//10N_N_Salt_Pepper.PNG";
+		img = "..//Data//Input//girl_in_hat.png";
 		imagePath = marshal_as<System::String^>(img);
 		imageData = inputImage(&columns, &rows, imagePath);
 		//write code here
@@ -149,15 +149,12 @@ int main()
 	MPI_Bcast(&rows, 1, MPI_INT, 0, MPI_COMM_WORLD);
 	MPI_Bcast(&columns, 1, MPI_INT, 0, MPI_COMM_WORLD);
 	MPI_Bcast(&start_s, 1, MPI_INT, 0, MPI_COMM_WORLD);
+
 	int elementsPerProcessor = (rows * columns) / size;
 	int rowsPerProcessor = rows / size;
 	int* filteredImagePerProcessor = new int[elementsPerProcessor] {};
 	int* unfilteredImagePerProcessor = new int[elementsPerProcessor] {};
-	/*int extraElementsForMiddleProcessors = (filterSize - 1) * columns;
-	int extraElementsForBoundaryProcessors = (filterSize / 2) * columns;
-	int elementsForBoundaryProcessors = elementsPerProcessor + extraElementsForBoundaryProcessors;
-	int elementsForMiddleProcessors = elementsPerProcessor + extraElementsForMiddleProcessors;
-	int* recvBufferForMiddleProcessors = new int[elementsForMiddleProcessors];*/
+
 	MPI_Barrier(MPI_COMM_WORLD);
 	MPI_Scatter(imageData, elementsPerProcessor, MPI_INT, unfilteredImagePerProcessor, elementsPerProcessor, MPI_INT, 0, MPI_COMM_WORLD);
 
